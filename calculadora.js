@@ -76,6 +76,14 @@ for (let i = 0; i < functions.length; i++) {
                 expression = "";
                 updateExpression(`${decimal}.`);
                 break;
+            case "log":
+                let lognum = expression;
+                expression = "";
+                updateExpression(`Math.log(${lognum})`);
+                break;
+            case "!":
+                updateExpression("!");
+                break;
         }
     });
 }

@@ -22,11 +22,23 @@ const updateExpression = value => {
 };
 
 const updateResult = () => {
-    result = eval(expression);
+    try {
+        result = eval(expression).toString();
+    } catch (error) {
+        result = "Error";
+    }
     displayResult();
 };
+
+const backspace = () => {
+    expression = expression.substring(0, expression.length - 1);
+    displayExpression();
+};
+
 document.getElementById("clear").addEventListener("click", clear);
 document.getElementById("equals").addEventListener("click", updateResult);
+document.getElementById("backspace").addEventListener("click", backspace);
+
 const numbers = document.getElementsByClassName("number");
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener("click", () => {
@@ -35,34 +47,35 @@ for (let i = 0; i < numbers.length; i++) {
 }
 
 const operators = document.getElementsByClassName("operator");
-    for (let i = 0; i < operators.length; i++) {
+for (let i = 0; i < operators.length; i++) {
     operators[i].addEventListener("click", () => {
         updateExpression(operators[i].innerText);
     });
 }
-/*
-document.addEventListener("keydown", function(event) {
-    switch (event.key) {
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-      case "6":
-      case "7":
-      case "8":
-      case "9":
-      case "0":
-        display.value += event.key;
-        break;
-      case "+":
-      case "-":
-      case "*":
-      case "/":
-        display.value += event.key;
-        break;
-      default:
-        break;
-    }
-  });
-*/
+
+const functions = document.getElementsByClassName("functions");
+for (let i = 0; i < functions.length; i++) {
+    functions[i].addEventListener("click", () => {
+        switch (functions[i].innerText) {
+            case "√":
+                let sqrtnum = expression;
+                expression = "";
+                updateExpression(`Math.sqrt(${sqrtnum})`);
+                break;
+            case "x²":
+                updateExpression("**2");
+                break;
+            case "xʸ":
+                updateExpression("**");
+                break;
+            case "%":
+                updateExpression("/100");
+                break;
+            case ".":
+                let decimal = expression;
+                expression = "";
+                updateExpression(`${decimal}.`);
+                break;
+        }
+    });
+}
